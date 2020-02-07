@@ -15,8 +15,7 @@ describe('Categories API' ,()=>{
     return mockRequest.get('/api/v1/categories')
       .send(newCategory)
       .then(data=>{
-        console.log(data.body._id);
-        return mockRequest.get(`api/categories/${data.body}`)
+        return mockRequest.get(`api/categories/${data.body._id}`)
           .then(data =>{
             expect(data.status).toBe(200);
             expect(data.body[0].name).toEqual('shoes');
@@ -43,13 +42,13 @@ describe('Products API' ,()=>{
         expect(res.status).toEqual(200)
       })
   });
-  it ('get ()' ,() =>{
+  it ('get ()' , () =>{
     let newProduct = {name:'nike' , price: 78};
     return mockRequest.get('/api/v1/categories')
       .send(newProduct)
       .then(data=>{
         console.log(data.body._id);
-        return mockRequest.get(`api/Products/${data.body}`)
+        return mockRequest.get(`api/Products/${data.body._id}`)
           .then(data =>{
             expect(data.status).toBe(200);
             expect(data.body[0].price).toEqual(78);
@@ -57,11 +56,13 @@ describe('Products API' ,()=>{
       })
   });
   it('post () ' , ()=> {
-    let newProduct= {name:'shoes' , type: 'clothes'};
+    let newProduct = {name:'nike' , price: 78};
+
     return mockRequest.post('/api/v1/categories')
       .send(newProduct)
       .then(data => {
         Object.keys(newProduct).forEach(val => {
+          expect(data.status).toBe(201);
           expect(data.body[val]).toEqual(newProduct[val]);
         });
       });
